@@ -44,6 +44,15 @@ MongoClient.connect("mongodb://localhost:27017", function(err, client){
     })
   });
 
+  server.delete('/api/friends/:id', function(req, res, next){
+    const friendsCharacters = db.collection("characters");
+    const objectID = ObjectID(req.params.id);
+    friendsCharacters.remove({_id: objectID}, function(err, result){
+      if(err) next(err);
+      res.status(200).send();
+    })
+  });
+
 
 
 server.listen(3000, function(){
