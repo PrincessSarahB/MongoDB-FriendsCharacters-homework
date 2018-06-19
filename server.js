@@ -53,6 +53,14 @@ MongoClient.connect("mongodb://localhost:27017", function(err, client){
     })
   });
 
+  server.delete('/api/friends', function(req, res, next){
+    const friendsCharacters = db.collection("characters");
+    friendsCharacters.remove({}, function(err, result){
+      if(err) next(err);
+      res.status(200).send();
+    })
+  });
+
 
 
 server.listen(3000, function(){
