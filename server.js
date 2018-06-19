@@ -24,7 +24,15 @@ MongoClient.connect("mongodb://localhost:27017", function(err, client){
       res.status(201);
       res.json(result.ops[0]);
     })
-  })
+  });
+
+  server.get('/api/friends', function(req, res, next){
+    const friendsCharacters = db.collection("characters");
+    friendsCharacters.find().toArray(function(err, allCharacters){
+      if(err) next(err);
+      res.json(allCharacters);
+    })
+  });
 
 
 
