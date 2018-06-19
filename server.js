@@ -6,6 +6,7 @@ server.use(parser.json());
 server.use(parser.urlencoded({extended: true}));
 
 const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 
 MongoClient.connect("mongodb://localhost:27017", function(err, client){
   if(err) {
@@ -31,6 +32,15 @@ MongoClient.connect("mongodb://localhost:27017", function(err, client){
     friendsCharacters.find().toArray(function(err, allCharacters){
       if(err) next(err);
       res.json(allCharacters);
+    })
+  });
+
+  server.post('/api/friends/:id', function(req, res, next){
+    const friendsCharacters = db.collection("characters");
+    const objectID = ObjectID(req.params.id);
+    friendsCharacters.update({_id: objectID}, req.body, function(err, result){
+      if(err) next(err);
+      res.status(201).send();
     })
   });
 
