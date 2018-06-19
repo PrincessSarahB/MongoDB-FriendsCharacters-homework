@@ -16,6 +16,16 @@ MongoClient.connect("mongodb://localhost:27017", function(err, client){
   const db = client.db("friends_characters");
   console.log("connected to database!");
 
+  server.post('/api/friends', function(req, res, next){
+    const friendsCharacters = db.collection("characters");
+    const characterToSave = req.body;
+    friendsCharacters.save(characterToSave, function(err, result){
+      if(err) next(err);
+      res.status(201);
+      res.json(result.ops[0]);
+    })
+  })
+
 
 
 server.listen(3000, function(){
